@@ -1,0 +1,62 @@
+{% extends 'library/base.html' %}
+{% load  static %}
+{% load ratings %}
+{% block content%}
+
+<div class="booklist">
+    {% for book in books.all %}
+
+<div class="card m-2 img-thumbnail border-success mb-3" style="width: 14rem; jus">
+  <img src="{{ book.image.url}}" class="card-img-top" style="height: 20rem;">
+  <div class="card-body" style="justify-content: space-around">
+    <h5 class="card-title">{{ book.book_name }}</h5>
+    <h6 class="card-subtitle mb-2 text-muted" style="display: flex;justify-content: center;">{% ratings book 20 20 %}</h6>
+    
+    <p class="card-text" style="align-self: center">{% for author in book.author.all %}{{ author }}<br/>{% endfor %}</p>
+    <a href="{% url "book-detail" book.id %}" class="btn btn-primary btn-lg">Details</a>
+  </div>
+</div>
+{% empty %}
+<p class="textArea">No books found!</p>
+
+    {% endfor %}
+</div>
+<div class="bookListButtons">
+<div class="pages" >
+    {% if is_paginated %}
+
+      {% if page_obj.has_previous %}
+        <a class="btn btn-outline-info mb-4 btn-lg" href="?page=1">First</a>
+        <a class="btn btn-outline-info mb-4 btn-lg" href="?page={{ page_obj.previous_page_number}}">Previous</a>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <a class="btn btn-info mb-4 btn-lg" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <a class="btn btn-outline-info mb-4 btn-lg" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+       {% if page_obj.has_next %}
+        <a class="btn btn-outline-info mb-4 btn-lg" href="?page={{ page_obj.next_page_number}}">Next</a>
+        <a class="btn btn-outline-info mb-4 btn-lg" href="?page={{ page_obj.paginator.num_pages}}">Last</a>
+      {% endif %}
+
+    {% endif %}
+</div>
+
+<div class="searchArea">
+    <form action="" method="GET">
+      <input class="form-control-lg" type="text" name="q" value='{{ request.GET.q }}'>
+      <button class="btn-primary btn-lg" type="submit">Search</button>
+    </form>
+    </div>
+</div>
+
+<style>
+.star-ratings-rating-average, .star-ratings-rating-count, .star-ratings-rating-user {
+    display: none;
+}
+</style>
+    
+{% endblock content%}

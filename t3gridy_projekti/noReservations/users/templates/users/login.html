@@ -1,0 +1,28 @@
+{% extends "library/base.html" %} {% load crispy_forms_tags %}
+<!--Allows us to use crispy filter-->
+{% block content%}
+
+  <div class="content-section">
+    <form method="POST">
+      <!--formin submittaamisen jälkeinen metodi-->
+      {% csrf_token %}
+      <!--Pakollinen djangossa tietoturva-->
+      <fieldset class="form-group">
+        <!--fieldsetin sisältä napataan kaikki tieto-->
+        <legend class="border-bottom mb-4">Log in</legend>
+        {{form | crispy}}
+        <!--Haetaan wievs.py form avaimella muuttujaan tallennettu funktio | means use filter  -->
+      </fieldset>
+      <div class="form-group">
+        <button class="btn btn-outline-info btn-lg" type="submit">Login</button>
+      </div>
+    </form>
+    <div class="border-top pt-3">
+      <h3 class="text-muted">
+        Do you need an account?
+        <a class="ml-2" href="{% url 'register'%}">Sign up here</a>
+      </h3>
+    </div>
+  </div>
+
+{% endblock content%}s

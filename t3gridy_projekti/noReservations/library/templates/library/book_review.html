@@ -1,0 +1,35 @@
+{% extends "library/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load ratings %}
+
+{% block content %}
+
+{% comment %} <div class="bookDetails">
+<img style="width:80px; height:auto;" src="{{ book.image.url}}" alt="">
+
+<div class="bookDetailsText">
+<h1>{{ book.book_name }}</h1>
+
+</div>
+</div> {% endcomment %}
+
+
+
+<div class="container w-75 content-section reglogsign">
+  <form class="whitebgform" method="POST">
+    {% csrf_token%}
+   
+    <input type="radio"></input>
+     <input type="radio"></input>
+      <input type="radio"></input>
+      <input type="radio"></input>
+      <input type="radio"></input>
+      <input type="text"></input>
+      <input type="button"></input>
+       {{ form|crispy }}
+  </form>
+</div>
+
+
+{% endblock content %}

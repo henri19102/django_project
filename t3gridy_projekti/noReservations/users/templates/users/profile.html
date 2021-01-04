@@ -1,0 +1,53 @@
+{% extends "library/base.html" %} 
+{% load crispy_forms_tags %}
+<!--Allows us to use crispy filter-->
+{% block content%}
+
+  <div class="content-section">
+    <div class="media">
+    <div class="profilePic">
+    <h2>Profile Picture</h2>
+      <img
+        class="rounded-circle account-img"
+        src="{{ user.profile.image.url }}"
+      />
+      </div>
+      <div class="media-body">
+        <h2 class="account-heading">{{ user.username }}</h2>
+        <p class="text-secondary">{{ user.email}}</p>
+      <form class="whitebgform" method="POST" enctype = "multipart/form-data">
+              {% csrf_token%}
+              <fieldset class="form-group text-black">
+              <legend class="border-bottom mb-4">Profile Info</legend>
+              {{ u_form|crispy }}
+              {{ p_form|crispy }}
+              </fieldset>
+              <div class="form-group">
+                <button class="btn btn-outline-info btn-lg" type="submit">Update</button>
+              </div>
+      </form>
+      
+      </div>
+      
+      <div class="usersBooks">
+      <h2>Your loaned books:</h2>
+      <ul class="list-group">
+      {% for books in myBooks%}
+      <li class="list-group-item">
+      <img style="width:50px;" src="{{ books.book.image.url}}" > {{ books.book.book_name}}
+      <p>Exp: {{ books.expirydate}}</p>
+      <form action="{% url 'returnBook' books.book.id %}" method="POST">
+    {% csrf_token %} 
+    <button name="returnBook" type="submit" class="btn btn-primary btn-lg"  value="{{book.id}}">Return book</button>
+    </form>
+      </li>
+      
+      {% empty %}
+      <h4>No books borrowed yet...</h4>
+      {% endfor%}
+      </ul>
+      </div>
+    </div>
+  </div>
+
+{% endblock content%}

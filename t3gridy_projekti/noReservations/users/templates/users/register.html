@@ -1,0 +1,21 @@
+{% extends "library/base.html" %} 
+{% load crispy_forms_tags %}
+{% block content%}
+
+<div class="container w-75 content-section reglogsign">
+  <form class="whitebgform" method="POST">
+    {% csrf_token%}
+    <fieldset class="form-group text-black">
+      <legend class="border-bottom mb-4">Join Today!</legend>
+      {{ form|crispy }}
+    </fieldset>
+    <div class="form-group">
+      <button class="btn btn-outline-info btn-lg" type="submit">Register now</button>
+    </div>
+    <small class="text-muted">
+      Already a member, Log in from <a class="ml-2" href="#">Here!</a>
+    </small>
+  </form>
+</div>
+
+{% endblock content%}

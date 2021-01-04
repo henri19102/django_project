@@ -1,0 +1,43 @@
+{% extends 'library/base.html' %}
+{% load ratings %}
+{% block content %}
+
+
+<div class="bookDetails">
+<img style="width:80px; height:auto;" src="{{ book.image.url}}" alt="">
+
+<div class="bookDetailsText">
+<h2><strong><u>{{ book.book_name }}</u></strong></h2>
+<h2>Author:</h2>
+<h4><em>{% for author in book.author.all %}{{ author }}<br/>{% endfor %}</em></h4>
+<h2>Publish date:</h2>
+<h4><em>{{ book.pub_date }}</em></h4>
+</div>
+<div class="rating">
+{% ratings book %}
+ </div>
+</div>
+
+<p class="textArea">Description:</p>
+<p class="textArea">{{book.description}}</p>
+
+<div class="borrowButton">
+
+{% if book.loaned == False and user.is_authenticated %}
+<form action="{% url 'loan' book.id %}" method="POST">
+    {% csrf_token %} 
+    <button name="loan" type="submit" class="btn btn-primary btn-lg" value="{{book.id}}">Borrow</button>
+</form>
+{% elif  book.loaned == True and user.is_authenticated %}
+<p >Book is already borrowed</p>
+<a href="{% url 'booking'%}">Return</a>
+{% else %}
+<p  style="color: red;">You must be logged in to borrow a book!</p>
+<a href="{% url 'login' %}">Login here</a>
+{% endif %}
+
+</div>
+
+
+
+{% endblock content %}
